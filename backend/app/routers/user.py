@@ -21,6 +21,7 @@ logger = get_logger(__name__)
 
 router: APIRouter = APIRouter(prefix="/users", tags=["users"])
 
+
 @router.post("/signup", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 async def signup(user_data: UserCreate, db: AsyncSession = Depends(get_db)) -> TokenResponse:
     """
