@@ -21,9 +21,11 @@ logger = get_logger(__name__)
 
 router: APIRouter = APIRouter(prefix="/users", tags=["users"])
 
-
 @router.post("/signup", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 async def signup(user_data: UserCreate, db: AsyncSession = Depends(get_db)) -> TokenResponse:
+    """
+    User registration endpoint.
+    """
     logger.info("Signup request for user: %s", user_data.username)
     auth = JwtAuth(db_session=db)
     user = await auth.create_user(
@@ -58,6 +60,9 @@ async def get_user(
     db: AsyncSession = Depends(get_db),
     _current_user: User = Depends(get_current_user),
 ) -> UserResponse:
+    """
+    Get user by ID endpoint.
+    """
     logger.info("Get user request for id: %d", user_id)
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
@@ -76,6 +81,9 @@ async def update_user(
     db: AsyncSession = Depends(get_db),
     _current_user: User = Depends(verify_ownership),
 ) -> UserResponse:
+    """
+    Update user by ID endpoint.
+    """
     logger.info("Update user request for id: %d", user_id)
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
@@ -119,6 +127,9 @@ async def delete_user(
     db: AsyncSession = Depends(get_db),
     _current_user: User = Depends(verify_ownership),
 ) -> None:
+    """
+    Delete user by ID endpoint.
+    """
     logger.info("Delete user request for id: %d", user_id)
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
