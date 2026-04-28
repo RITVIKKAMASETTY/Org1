@@ -30,6 +30,9 @@ async def signup_organization(
     data: OrganizationCreate,
     db: AsyncSession = Depends(get_db),
 ) -> OrganizationSignupResponse:
+    """
+    Organization signup endpoint.
+    """
     logger.info("Organization signup request for: %s", data.username)
 
     auth = JwtAuth(db_session=db)
@@ -60,6 +63,9 @@ async def get_organization(
     db: AsyncSession = Depends(get_db),
     _current_user: User = Depends(get_current_user),
 ) -> OrganizationResponse:
+    """
+    Get organization by user ID endpoint.
+    """
     logger.info("Get organization request for user id: %d", user_id)
 
     result = await db.execute(select(Organization).where(Organization.account_id == user_id))
@@ -80,6 +86,9 @@ async def update_organization(
     db: AsyncSession = Depends(get_db),
     _current_user: User = Depends(verify_ownership),
 ) -> OrganizationResponse:
+    """
+    Update organization by user ID endpoint.
+    """
     logger.info("Update organization request for user id: %d", user_id)
 
     result = await db.execute(select(Organization).where(Organization.account_id == user_id))
@@ -107,6 +116,9 @@ async def delete_organization(
     db: AsyncSession = Depends(get_db),
     _current_user: User = Depends(verify_ownership),
 ) -> None:
+    """
+    Delete organization by user ID endpoint.
+    """
     logger.info("Delete organization request for user id: %d", user_id)
 
     result = await db.execute(select(Organization).where(Organization.account_id == user_id))
