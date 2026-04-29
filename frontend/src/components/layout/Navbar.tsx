@@ -12,6 +12,7 @@ export interface NavbarProps {
   items?: NavItem[];
   ctaLabel?: string;
   ctaHref?: string;
+  onCtaClick?: () => void;
 }
 
 const defaultNavItems: NavItem[] = [
@@ -24,7 +25,8 @@ const defaultNavItems: NavItem[] = [
 const Navbar: React.FC<NavbarProps> = ({
   items = defaultNavItems,
   ctaLabel = 'Get Started',
-  ctaHref = '#get-started',
+  ctaHref,
+  onCtaClick,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -64,7 +66,12 @@ const Navbar: React.FC<NavbarProps> = ({
 
       {/* CTA Button */}
       <div className="hidden md:block">
-        <Button variant="outline" href={ctaHref} id="navbar-cta">
+        <Button
+          variant="outline"
+          href={onCtaClick ? undefined : ctaHref}
+          onClick={onCtaClick}
+          id="navbar-cta"
+        >
           {ctaLabel}
         </Button>
       </div>
@@ -105,7 +112,12 @@ const Navbar: React.FC<NavbarProps> = ({
               {item.label}
             </a>
           ))}
-          <Button variant="outline" href={ctaHref} className="self-start">
+          <Button
+            variant="outline"
+            href={onCtaClick ? undefined : ctaHref}
+            onClick={onCtaClick}
+            className="self-start"
+          >
             {ctaLabel}
           </Button>
         </div>
