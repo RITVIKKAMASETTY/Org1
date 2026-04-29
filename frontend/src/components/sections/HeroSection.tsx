@@ -1,13 +1,19 @@
 import React from 'react';
 import Button from '../ui/Button';
 
+export interface CtaConfig {
+  label: string;
+  href?: string;
+  onClick?: () => void;
+}
+
 export interface HeroSectionProps {
   headline?: string;
   headlineAccent?: string;
   subheadline?: string;
   description?: string;
-  primaryCta?: { label: string; href: string };
-  secondaryCta?: { label: string; href: string };
+  primaryCta?: CtaConfig;
+  secondaryCta?: CtaConfig;
   backgroundImage?: string;
 }
 
@@ -74,7 +80,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="flex flex-wrap gap-4">
             <Button
               variant="primary"
-              href={primaryCta.href}
+              href={primaryCta.onClick ? undefined : primaryCta.href}
+              onClick={primaryCta.onClick}
               id="hero-primary-cta"
               className="text-sm md:text-base px-7 py-3.5"
             >
@@ -82,7 +89,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </Button>
             <Button
               variant="outline"
-              href={secondaryCta.href}
+              href={secondaryCta.onClick ? undefined : secondaryCta.href}
+              onClick={secondaryCta.onClick}
               id="hero-secondary-cta"
               className="text-sm md:text-base px-7 py-3.5"
             >
